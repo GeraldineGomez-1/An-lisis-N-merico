@@ -1,0 +1,29 @@
+T0=34.5
+T1=33.7
+t0=0
+t1=1
+M=16
+
+fp<-function(temp,t){
+  s=(temp-16)/exp(t)
+  return(s)
+}
+h<-fp(T0,t0,0)
+h
+fp2<-function(temp,t,h){
+  k=-ln((temp-16)/h)/t
+  return(k)
+}
+k<-fp(T1,t1,h)
+k
+fp3<-function(k,temp,parms){
+  s=k*(16-temp)
+  return(list(s))
+}
+
+tis=seq(0,5,0.01)
+require(deSolve)
+sol=ode(c(k,34.5),tis,fp3,parms=NULL,method="euler")
+sol
+plot(tis,sol[,3],type="l",col="white",xlab="Horas",ylab="Temperatura",main="Enfriamiento")
+points(tis,sol[,3],col="red",xlab="Horas",ylab="Temperatura",main="Enfriamiento")
